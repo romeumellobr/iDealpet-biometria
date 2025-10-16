@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Fases do Projeto: {{ projeto.nome }}</h2>
+
+        <a href="{{ url_for('crisp.nova_fase', projeto_id=projeto.id) }}" class="btn btn-primary mb-3">
+            Adicionar Nova Fase
+        </a>
+
+        {% if projeto.fases %}
+            <ul class="list-group">
+                {% for fase in projeto.fases %}
+                    <li class="list-group-item">
+                        <h5>{{ fase.nome }}</h5>
+                        <p>{{ fase.descricao }}</p>
+                        <a href="{{ url_for('crisp.atividades', fase_id=fase.id) }}" class="btn btn-secondary btn-sm">
+                            Ver Atividades
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Nenhuma fase cadastrada para este projeto.</p>
+        {% endif %}
+    </div>
+{% endblock %}

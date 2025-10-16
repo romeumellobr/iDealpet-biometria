@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+    <title>Listagem de Features</title>
+</head>
+<body>
+	<div class="container">
+        <h1>Listagem de Features obtidas com as captura das imagens dos dogs </h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Identificação</th>
+                    <th>Caracteristicas obtidas </th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for feature in features %}
+                <tr>
+                    <td>{{ feature[1] }}</td> 
+                    <td>{{ feature[2] }}</td> 
+                    <td>{{ feature[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+		<a href="/">Voltar</a>
+        <footer>
+            <p>&copy; 2024 Pets </p>
+        </footer>
+    </div>
+</body>
+</html>

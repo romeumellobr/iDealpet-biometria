@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados SIFT</title>
+</head>
+<body>
+    <h1>Resultados SIFT</h1>
+    <div style="text-align: center;">
+        <h2>Imagem com Keypoints</h2>
+        <img src="data:image/jpeg;base64,{{ image_base64 }}" alt="Imagem com Keypoints" style="width: 400px;">
+    </div>
+
+    <div>
+        <h2>Descritores SIFT (primeiros 10)</h2>
+        <pre>{{ descriptors[:10] }}</pre>
+    </div>
+
+    <div>
+        <h2>Descritores GLCM</h2>
+        <pre>{{ glcm_features }}</pre>
+    </div>
+
+    <a href="{{ url_for('biometria.index') }}">Voltar para a lista de imagens</a>
+</body>
+</html>

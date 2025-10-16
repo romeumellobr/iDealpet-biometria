@@ -1,0 +1,10 @@
+.github
+postman
+.DS_Store
+*.pyc
+__pycache__
+.git
+.gitignore
+.env
+*.md
+*.postman_collection.json

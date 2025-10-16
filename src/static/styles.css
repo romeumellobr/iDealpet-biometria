@@ -1,0 +1,66 @@
+/* Reset de margin e padding para todos os elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilização do corpo da página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Fundo claro */
+    color: #333; /* Texto escuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Altura mínima para centralizar verticalmente */
+}
+
+/* Container principal */
+.container {
+    background-color: #fff; /* Fundo branco para o container */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Largura do container */
+    max-width: 800px; /* Largura máxima */
+}
+
+/* Título da página */
+h1 {
+    text-align: center; /* Centraliza o título */
+    color: #2c3e50; /* Azul escuro */
+    margin-bottom: 20px;
+}
+
+/* Estilização da tabela */
+table {
+    width: 100%; /* Tabela ocupa 100% do container */
+    border-collapse: collapse; /* Remove espaçamento entre células */
+    margin-top: 20px; /* Espaçamento acima da tabela */
+}
+
+/* Estilização das células da tabela */
+th, td {
+    border: 1px solid #ddd; /* Borda clara */
+    padding: 12px; /* Espaçamento interno */
+    text-align: left; /* Alinhamento do texto */
+}
+
+/* Cor do cabeçalho da tabela */
+th {
+    background-color: #3498db; /* Azul */
+    color: white; /* Texto branco */
+}
+
+/* Cor das linhas da tabela */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Cor cinza claro para linhas pares */
+}
+
+/* Estilo para o rodapé */
+footer {
+    text-align: center; /* Centraliza o texto do rodapé */
+    margin-top: 20px; /* Espaçamento acima do rodapé */
+    color: #7f8c8d; /* Cinza */
+}

@@ -1,0 +1,450 @@
+{
+	"info": {
+		"_postman_id": "897fa16f-b9fe-47f2-aa72-48f183aa4d29",
+		"name": "Pet-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3332699"
+	},
+	"item": [
+		{
+			"name": "BiometriaBayes",
+			"item": [
+				{
+					"name": "http://35.209.100.86:8080/biometria/add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n           \"dog_name\": \"Rex\",\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/03d9500f3abf8957-photo.jpg\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://34.172.162.26:8080/biometria/add",
+							"protocol": "http",
+							"host": [
+								"34",
+								"172",
+								"162",
+								"26"
+							],
+							"port": "8080",
+							"path": [
+								"biometria",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://35.209.100.86:8080/biometria/sift/add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n           \"dog_name\": \"Rex\",\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/03d9500f3abf8957-photo.jpg\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://35.209.100.86:8080/biometria/sift/add",
+							"protocol": "http",
+							"host": [
+								"35",
+								"209",
+								"100",
+								"86"
+							],
+							"port": "8080",
+							"path": [
+								"biometria",
+								"sift",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://35.209.100.86:8080/biometria/extract_features_pyfeats",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n           \"dog_name\": \"Rex\",\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/0c9d98f5e19409c7-photo.jpg\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://35.209.100.86:8080/biometria/extract_features_pyfeats",
+							"protocol": "http",
+							"host": [
+								"35",
+								"209",
+								"100",
+								"86"
+							],
+							"port": "8080",
+							"path": [
+								"biometria",
+								"extract_features_pyfeats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://35.209.100.86:8080/biometria/visualize_keypoints",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"image_url\": \"https://storage.googleapis.com/dog-nose/03d9500f3abf8957-photo.jpg\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://35.209.100.86:8080/biometria/visualize_keypoints",
+							"protocol": "http",
+							"host": [
+								"35",
+								"209",
+								"100",
+								"86"
+							],
+							"port": "8080",
+							"path": [
+								"biometria",
+								"visualize_keypoints"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "homologacao",
+			"item": [
+				{
+					"name": "http://35.209.100.86:8080/v1/add_dog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n           \"dog_name\": \"Rex\",\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/extract-features-nose/dog_nose_199.jpg\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://35.209.100.86:8080/v1/add_dog",
+							"protocol": "http",
+							"host": [
+								"35",
+								"209",
+								"100",
+								"86"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"add_dog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://35.209.100.86:8080/v2/add_dog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n           \"dog_name\": \"Rex\",\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/extract-features-nose/dog_nose_199.jpg\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://35.209.100.86:8080/v2/add_dog",
+							"protocol": "http",
+							"host": [
+								"35",
+								"209",
+								"100",
+								"86"
+							],
+							"port": "8080",
+							"path": [
+								"v2",
+								"add_dog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://35.209.100.86:8080/v1/identify_dog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n           \"dog_name\": \"Rex\",\r\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/extract-features-nose/dog_nose_199.jpg\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://35.209.100.86:8080/v1/identify_dog",
+							"protocol": "http",
+							"host": [
+								"35",
+								"209",
+								"100",
+								"86"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"identify_dog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://35.209.100.86:8080/v2/identify_dog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n           \"dog_name\": \"Lobo\",\r\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/extract-features-nose/dog_nose_19.jpg\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://35.209.100.86:8080/v2/identify_dog",
+							"protocol": "http",
+							"host": [
+								"35",
+								"209",
+								"100",
+								"86"
+							],
+							"port": "8080",
+							"path": [
+								"v2",
+								"identify_dog"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Desenvolvimento",
+			"item": [
+				{
+					"name": "http://34.172.162.26:8080/v1/add_dog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n           \"dog_name\": \"Rex\",\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/03d9500f3abf8957-photo.jpg\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://34.172.162.26:8080/v1/add_dog",
+							"protocol": "http",
+							"host": [
+								"34",
+								"172",
+								"162",
+								"26"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"add_dog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://34.172.162.26:8080/v2/add_dog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n           \"dog_name\": \"Rex\",\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/03d9500f3abf8957-photo.jpg\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://34.172.162.26:8080/v2/add_dog",
+							"protocol": "http",
+							"host": [
+								"34",
+								"172",
+								"162",
+								"26"
+							],
+							"port": "8080",
+							"path": [
+								"v2",
+								"add_dog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://34.172.162.26:8080/v1/identify_dog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n           \"dog_name\": \"Rex\",\r\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/03d9500f3abf8957-photo.jpg\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://34.172.162.26:8080/v1/identify_dog",
+							"protocol": "http",
+							"host": [
+								"34",
+								"172",
+								"162",
+								"26"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"identify_dog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://34.172.162.26:8080/v2/identify_dog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n           \"dog_name\": \"Lobo\",\r\n           \"image_url\": \"https://storage.googleapis.com/dog-nose/03d9500f3abf8957-photo.jpg\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://34.172.162.26:8080/v2/identify_dog",
+							"protocol": "http",
+							"host": [
+								"34",
+								"172",
+								"162",
+								"26"
+							],
+							"port": "8080",
+							"path": [
+								"v2",
+								"identify_dog"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

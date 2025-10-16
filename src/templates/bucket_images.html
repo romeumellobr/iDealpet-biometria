@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagens no Bucket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            justify-items: center;
+            margin-top: 20px;
+        }
+        .image-container {
+            text-align: center;
+        }
+        img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .image-name {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .load-more, .compare-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .compare-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Imagens no Bucket Google Cloud Storage</h1>
+    <div class="grid-container" id="image-list">
+        {% for url in image_urls[:10] %}
+            <div class="image-container">
+                <input type="checkbox" class="image-checkbox" onclick="handleCheckboxClick(this)" value="{{ url }}">
+                <a href="{{ url_for('biometria.extract_sift', image_url=url) }}">
+                    <img src="{{ url }}" alt="Imagem">
+                </a>
+                <p><a href="{{ url_for('biometria.extract_sift', image_url=url) }}">Ver Keypoints</a></p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="button-container">
+        {% if image_urls|length > 10 %}
+            <button class="load-more" onclick="loadMoreImages()">Carregar mais</button>
+        {% endif %}
+        <button class="compare-btn" onclick="compareImages()" disabled>Comparar Selecionadas</button>
+    </div>
+
+    <script>
+        let selectedCount = 0;
+        let imageIndex = 10;
+        const totalImages = {{ image_urls|length }};
+        const imageUrls = {{ image_urls|tojson }};
+        let selectedImages = [];
+
+        function handleCheckboxClick(checkbox) {
+            if (checkbox.checked) {
+                selectedCount++;
+                selectedImages.push(checkbox.value);
+            } else {
+                selectedCount--;
+                selectedImages = selectedImages.filter(url => url !== checkbox.value);
+            }
+
+            const checkboxes = document.querySelectorAll('.image-checkbox');
+            checkboxes.forEach(cb => {
+                if (selectedCount >= 2 && !cb.checked) {
+                    cb.disabled = true;
+                } else {
+                    cb.disabled = false;
+                }
+            });
+
+            document.querySelector('.compare-btn').disabled = selectedCount !== 2;
+        }
+
+        function loadMoreImages() {
+            const container = document.getElementById('image-list');
+            for (let i = imageIndex; i < imageIndex + 10 && i < totalImages; i++) {
+                const div = document.createElement('div');
+                div.className = 'image-container';
+                div.innerHTML = `
+                    <input type="checkbox" class="image-checkbox" onclick="handleCheckboxClick(this)" value="${imageUrls[i]}">
+                    <a href="/biometria/extract_sift?image_url=${imageUrls[i]}">
+                        <img src="${imageUrls[i]}" alt="Imagem">
+                    </a>
+                    <p><a href="/biometria/extract_sift?image_url=${imageUrls[i]}">Ver Keypoints</a></p>
+                `;
+                container.appendChild(div);
+            }
+            imageIndex += 10;
+            if (imageIndex >= totalImages) {
+                document.querySelector('.load-more').style.display = 'none';
+            }
+        }
+
+        function compareImages() {
+            if (selectedImages.length !== 2) return;
+
+            const url = `/biometria/compare_sift?image1=${encodeURIComponent(selectedImages[0])}&image2=${encodeURIComponent(selectedImages[1])}`;
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

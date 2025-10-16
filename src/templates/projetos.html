@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h3>Projetos</h3>
+        {% if projetos %}
+            <ul class="list-group">
+                {% for projeto in projetos %}
+                    <li class="list-group-item">
+                        <h5>
+                            <a href="{{ url_for('crisp.projeto_detalhes', projeto_id=projeto.id) }}">
+                                {{ projeto.nome }}
+                            </a>
+                        </h5>
+						<p class="lead">{{ projeto.descricao }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Nenhum projeto cadastrado.</p>
+        {% endif %}
+		<br><br><br>
+		<a href="{{ url_for('crisp.novo_projeto') }}" class="btn btn-primary mb-3">Novo Projeto</a>
+
+    </div>
+{% endblock %}

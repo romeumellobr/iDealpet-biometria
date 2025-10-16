@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}Selecionar Fase{% endblock %}
+
+{% block content %}
+<h1>Selecione uma Fase para Adicionar Atividades</h1>
+<ul class="list-group">
+    {% for fase in fases %}
+        <li class="list-group-item">
+            <a href="{{ url_for('crisp.nova_atividade', fase_id=fase.id) }}">
+                {{ fase.nome }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,6 @@
+<h1>Atividades da Fase: {{ fase.nome }}</h1>
+<ul>
+    {% for atividade in atividades %}
+        <li>{{ atividade.nome }} - Status: {{ atividade.status }}</li>
+    {% endfor %}
+</ul>

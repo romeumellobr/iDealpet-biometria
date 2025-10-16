@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}Editar Descrições - {{ projeto.nome }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-primary">✏️ {{ projeto.nome }}</h1>
+    <p class="lead">{{ projeto.descricao }}</p>
+
+    <hr>
+
+    <form method="POST">
+        {% for fase in fases %}
+            <div class="card mb-4 border-primary border-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">📌 {{ fase.nome }}</h5>
+                </div>
+                <div class="card-body">
+                    <label class="form-label fw-bold">Descrição Anterior:</label>
+                    <textarea class="form-control" rows="3" readonly>{{ fase.descricao }}</textarea>
+
+                    <label class="form-label mt-2 fw-bold">Nova Descrição:</label>
+                    <textarea class="form-control" name="fase_{{ fase.id }}_descricao" rows="3"></textarea>
+
+                    {% if fase.atividades %}
+                        <h6 class="mt-3 text-success">Atividades:</h6>
+                        {% for atividade in fase.atividades %}
+                            <div class="card mt-3 border-success border-2">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0">📍 {{ atividade.nome }}</h6>
+                                </div>
+                                <div class="card-body">
+                                    <label class="form-label fw-bold">Descrição Anterior:</label>
+                                    <textarea class="form-control" rows="2" readonly>{{ atividade.descricao }}</textarea>
+
+                                    <label class="form-label mt-2 fw-bold">Nova Descrição:</label>
+                                    <textarea class="form-control" name="atividade_{{ atividade.id }}_descricao" rows="2"></textarea>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted mt-3">Nenhuma atividade cadastrada nesta fase.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success mt-4">💾 Salvar Alterações</button>
+        <a href="{{ url_for('crisp.projeto_detalhes', projeto_id=projeto.id) }}" class="btn btn-secondary mt-4">❌ Cancelar</a>
+    </form>
+
+    <br><br><br>
+</div>
+{% endblock %}

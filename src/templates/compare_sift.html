@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comparação SIFT</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; border: 1px solid black; text-align: center; }
+        .green { color: green; }
+        .red { color: red; }
+        .black { color: black; }
+    </style>
+</head>
+<body>
+    <h2>Comparação de Descritores SIFT</h2>
+    <div style="display: flex; justify-content: space-around;">
+        <div>
+            <h3>Imagem 1</h3>
+            <img src="data:image/jpeg;base64,{{ image1 }}" width="300">
+        </div>
+        <div>
+            <h3>Imagem 2</h3>
+            <img src="data:image/jpeg;base64,{{ image2 }}" width="300">
+        </div>
+    </div>
+
+    <h3>Descritores Correspondentes</h3>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Descritor Imagem 1</th>
+            <th>Descritor Imagem 2</th>
+            <th>Distância</th>
+        </tr>
+        {% for row in table_data %}
+        <tr class="{{ row.color }}">
+            <td>{{ row.index }}</td>
+            <td>{{ row.desc1 }}</td>
+            <td>{{ row.desc2 }}</td>
+            <td>{{ row.distance }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

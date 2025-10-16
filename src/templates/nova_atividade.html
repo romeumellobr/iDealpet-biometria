@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Nova Atividade{% endblock %}
+
+{% block content %}
+<h1>Adicionar Atividade à Fase: {{ fase.nome }}</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="atividade" class="form-label">Atividade</label>
+        <select class="form-control" id="atividade" name="atividade" required>
+            <option value="" disabled selected>Selecione uma atividade</option>
+            {% for atividade in atividades_disponiveis[fase.nome] %}
+                <option value="{{ atividade }}">{{ atividade }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição (opcional)</label>
+        <textarea class="form-control" id="descricao" name="descricao"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Adicionar Atividade</button>
+</form>
+
+<a href="{{ url_for('crisp.listar_fases_para_atividades', projeto_id=projeto_id) }}" class="btn btn-secondary mt-3">Voltar</a>
+
+{% endblock %}

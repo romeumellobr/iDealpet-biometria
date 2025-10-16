@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ projeto.nome }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-primary">{{ projeto.nome }}</h1>
+    <p class="lead">{{ projeto.descricao }}</p>
+
+    <hr>
+
+    <h2 class="text-secondary">Fases</h2>
+    {% if projeto.fases %}
+        {% for fase in projeto.fases %}
+            <div class="card mb-4 border-dark">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📌 {{ fase.nome }}</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Descrição:</strong> {{ fase.descricao }}</p>
+
+                    {% if fase.atividades %}
+                        <h6 class="text-primary">Atividades</h6>
+                        <ul class="list-group">
+                            {% for atividade in fase.atividades %}
+                                <li class="list-group-item">
+                                    <strong>📍 {{ atividade.nome }}</strong><br>
+                                    <small>{{ atividade.descricao }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhuma atividade cadastrada nesta fase.</p>
+                    {% endif %}               
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">Nenhuma fase cadastrada para este projeto.</p>
+    {% endif %}
+    <hr>
+
+    <h2 class="text-secondary">Histórico de Descrições</h2>
+    {% if historicos %}
+        <ul class="list-group">
+            {% for hist in historicos %}
+                <li class="list-group-item">
+                    <strong>Data:</strong> {{ hist.data_alteracao.strftime('%d/%m/%Y %H:%M') }}<br>
+                    <strong>Entidade:</strong> 
+                    {% if hist.entidade_tipo == 'projeto' %}
+                        Projeto
+                    {% elif hist.entidade_tipo == 'fase' %}
+                        Fase: {{ hist.fase_nome }}  <!-- Nome da fase -->
+                    {% elif hist.entidade_tipo == 'atividade' %}
+                        Atividade: {{ hist.atividade_nome }}  <!-- Nome da atividade -->
+                    {% endif %}<br>
+                    <strong>Anterior:</strong> <span class="text-muted">{{ hist.descricao_anterior }}</span><br>
+                    <strong>Nova:</strong> <span class="text-success">{{ hist.nova_descricao }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Nenhuma atualização de descrição registrada.</p>
+    {% endif %}
+	
+	<h2 class="text-secondary">Histórico de Descrições</h2>
+	{% if historicos %}
+		<ul class="list-group">
+			{% for hist in historicos %}
+				<li class="list-group-item">
+					<strong>Data:</strong> {{ hist.data_alteracao.strftime('%d/%m/%Y %H:%M') }}<br>
+					<strong>Entidade:</strong> {{ hist.entidade_nome }}<br>
+					<strong>Anterior:</strong> <span class="text-muted">{{ hist.descricao_anterior }}</span><br>
+					<strong>Nova:</strong> <span class="text-success">{{ hist.nova_descricao }}</span>
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p class="text-muted">Nenhuma atualização de descrição registrada.</p>
+	{% endif %}
+	
+	<h2 class="text-secondary">Histórico de Descrições</h2>
+{% if historicos %}
+    <ul class="list-group">
+        {% for hist in historicos %}
+            <li class="list-group-item">
+                <strong>Data:</strong> {{ hist.data_alteracao.strftime('%d/%m/%Y %H:%M') }}<br>
+                <strong>Entidade:</strong> {{ hist.entidade_tipo.capitalize() }}: {{ hist.entidade_id }}<br>
+                <strong>Anterior:</strong> <span class="text-muted">{{ hist.descricao_anterior }}</span><br>
+                <strong>Nova:</strong> <span class="text-success">{{ hist.nova_descricao }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="text-muted">Nenhuma atualização de descrição registrada.</p>
+{% endif %}
+
+
+
+
+    <a href="{{ url_for('crisp.editar_descricoes', projeto_id=projeto.id) }}" class="btn btn-warning mt-3">
+        ✏️ Editar Descrições
+    </a>
+    <br>
+    <br>
+    <br>
+</div>  
+
+{% endblock %}

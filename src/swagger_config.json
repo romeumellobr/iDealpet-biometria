@@ -1,0 +1,11 @@
+{
+  "swaggerUi": "/docs",
+  "specs": [
+    {
+      "endpoint": "spec",
+      "route": "/spec.json",
+      "rule_filter": ".*",
+      "model_filter": ".*"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ projeto.nome }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="text-primary">{{ projeto.nome }}</h3>
+    <p class="lead">{{ projeto.descricao }}</p>
+
+    <hr>
+
+    <h2 class="text-secondary">Fases</h2>
+    {% if projeto.fases %}
+        {% for fase in projeto.fases %}
+            <div class="card mb-4 border-dark">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📌 {{ fase.nome }}</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Descrição:</strong> {{ fase.descricao }}</p>
+
+                    {% if fase.atividades %}
+                        <h6 class="text-primary">Atividades</h6>
+                        <ul class="list-group">
+                            {% for atividade in fase.atividades %}
+                                <li class="list-group-item">
+                                    <strong>📍 {{ atividade.nome }}</strong><br>
+                                    <small>{{ atividade.descricao }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhuma atividade cadastrada nesta fase.</p>
+                    {% endif %}               
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">Nenhuma fase cadastrada para este projeto.</p>
+    {% endif %}
+    <hr>
+	<h2 class="text-secondary">Histórico de alterações</h2>
+	{% if historicos %}
+		<ul class="list-group">
+			{% for hist in historicos %}
+				<li class="list-group-item">
+					<strong>Data:</strong> {{ hist.data_alteracao.strftime('%d/%m/%Y %H:%M') }}<br>
+					<strong> {{ hist.entidade_tipo.capitalize() }} : {{ hist.entidade_nome }}</strong><br>
+					<strong>Descrição anterior:</strong> <span class="text-muted">{{ hist.descricao_anterior | safe }}</span><br>
+					<strong>Descrição atual:</strong> <span class="text-success">{{ hist.nova_descricao | safe }}</span>
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p class="text-muted">Nenhuma atualização de descrição registrada.</p>
+	{% endif %}
+    <a href="{{ url_for('crisp.editar_descricoes', projeto_id=projeto.id) }}" class="btn btn-warning mt-3">
+        ✏️ Editar Descrições
+    </a>
+    <br>
+	<hr>
+	<!--
+	<a href="{{ url_for('crisp.gerar_pdf') }}" class="btn btn-danger">📄 Gerar PDF</a>
+    <a href="{{ url_for('crisp.gerar_md') }}" class="btn btn-secondary">📝 Gerar Markdown</a>
+    -->
+	<br><br><br> 
+</div>  
+
+{% endblock %}

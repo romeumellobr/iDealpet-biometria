@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}Atividades da Fase: {{ fase.nome }}{% endblock %}
+
+{% block content %}
+<h1>Atividades da Fase: {{ fase.nome }}</h1>
+
+<ul class="list-group">
+    {% for atividade in fase.atividades %}
+        <li class="list-group-item">
+            {{ atividade.nome }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Fases{% endblock %}
+
+{% block content %}
+
+<h2>Adicionar fases</h2>
+
+<ul class="list-group">
+    {% for projeto in projetos %}
+        <li class="list-group-item">
+            <a href="{{ url_for('crisp.nova_fase', projeto_id=projeto.id) }}" class="btn btn-primary">
+                {{ projeto.nome }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

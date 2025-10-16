@@ -1,0 +1,43 @@
+name: Cloud Build Deploy
+
+on:
+  push:
+    branches:
+      - release
+
+env: 
+  _SERVICE_NAME: "api-biometria-v1"
+
+jobs:
+  build:
+    name: Build no Google Cloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Autenticação no Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Configurar Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+
+      - name: Definir Variáveis Globais
+        run: |
+          if [[ "${{ github.ref_name }}" == "release" ]]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=development" >> $GITHUB_ENV
+          fi
+
+      - name: Rodar o Cloud Build com Substituições
+        run: |
+          echo "Executando build com SERVICE_NAME: $_SERVICE_NAME"
+          gcloud builds submit \
+            --config=.cloudbuild.yaml \
+            --substitutions=_SERVICE_NAME="$_SERVICE_NAME",_ENVIRONMENT="$ENVIRONMENT",_GITHUB_PAT="${{ secrets.PERSONAL_ACCESS_TOKEN }}"

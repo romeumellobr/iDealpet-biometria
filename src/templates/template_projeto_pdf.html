@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ projeto.nome }}</title>
+	<link rel="stylesheet" href="/app/src/static/css/estilo.css">
+</head>
+<body>
+<div class="container">
+    <h3>{{ projeto.nome }}</h3>
+    <p>{{ projeto.descricao }}</p>
+
+    <hr>
+
+    <h2 class="text-secondary">Fases</h2>
+    {% if projeto.fases %}
+        {% for fase in projeto.fases %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>📌 {{ fase.nome }}</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Descrição:</strong> {{ fase.descricao }}</p>
+                    {% if fase.atividades %}
+                        <h6>Atividades</h6>
+                        <ul>
+                            {% for atividade in fase.atividades %}
+                                <li>📍 <strong>{{ atividade.nome }}</strong><br>
+                                    <small>{{ atividade.descricao }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhuma atividade cadastrada nesta fase.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">Nenhuma fase cadastrada para este projeto.</p>
+    {% endif %}
+
+    <hr>
+    <h2 class="text-secondary">Histórico de alterações</h2>
+    {% if historicos %}
+        <ul>
+            {% for hist in historicos %}
+                <li>
+                    <strong>Data:</strong> {{ hist.data_alteracao.strftime('%d/%m/%Y %H:%M') }}<br>
+                    <strong>{{ hist.entidade_tipo.capitalize() }}: {{ hist.entidade_nome }}</strong><br>
+                    <strong>Descrição anterior:</strong> <span class="text-muted">{{ hist.descricao_anterior }}</span><br>
+                    <strong>Descrição atual:</strong> <span class="text-success">{{ hist.nova_descricao }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Nenhuma atualização de descrição registrada.</p>
+    {% endif %}
+</div>
+</body>
+</html>

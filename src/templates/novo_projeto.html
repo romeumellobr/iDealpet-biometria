@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Novo Projeto{% endblock %}
+
+{% block content %}
+<h1>Criar Novo Projeto</h1>
+<form method="POST">
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome do Projeto</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
+    </div>
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <textarea class="form-control" id="descricao" name="descricao"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Criar Projeto</button>
+</form>
+{% endblock %}

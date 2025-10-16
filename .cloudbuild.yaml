@@ -1,0 +1,173 @@
+steps:  
+  - name: 'gcr.io/cloud-builders/git'
+    id: "clone-repo-infraestrutura"
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        git clone https://x-access-token:$_GITHUB_PAT@github.com/MELOZ-TECH/iDealPet-Infraestrutura.git infra_dir
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-image'
+    args: [
+      'build',
+      '--tag', 'gcr.io/$PROJECT_ID/$_SERVICE_NAME-$_ENVIRONMENT:BUILDING',
+      '.'
+    ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'tag-image'
+    args: [
+      'tag',
+      'gcr.io/$PROJECT_ID/$_SERVICE_NAME-$_ENVIRONMENT:BUILDING',
+      'gcr.io/$PROJECT_ID/$_SERVICE_NAME-$_ENVIRONMENT:latest'
+    ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-image'
+    args: ['push', 'gcr.io/$PROJECT_ID/$_SERVICE_NAME-$_ENVIRONMENT:latest']
+
+  - name: 'hashicorp/terraform:latest'
+    id: "terraform-version"
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform -version
+
+  - name: 'hashicorp/terraform:latest'
+    id: "terraform-init"
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        cd infra_dir/applications/cloud_run/$_SERVICE_NAME
+        terraform init -backend-config=".environments/$_ENVIRONMENT/backend.hcl"
+
+  - name: 'hashicorp/terraform:latest'
+    id: "terraform-validate"
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        cd infra_dir/applications/cloud_run/$_SERVICE_NAME
+        terraform validate
+
+  - name: 'hashicorp/terraform:latest'
+    id: "terraform-plan"
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "########## PROCESSANDO ARQUIVOS DE VARIAVEIS #########"
+        varfileBase=".environments/$_ENVIRONMENT"
+        varfiles=""
+
+        for file in $_VARFILES; do
+          if [ -n "$file" ]; then
+            varfiles="$varfiles -var-file=$varfileBase/$file"
+          fi
+        done
+        varfiles=$(echo "$varfiles" | tr ',' ' ')
+        echo "Arquivos de variáveis usados: $varfiles"
+        
+
+        cd infra_dir/applications/cloud_run/$_SERVICE_NAME
+        ls -la
+        terraform plan -input=false $varfiles -out=tfplan
+
+
+  # - name: 'hashicorp/terraform:latest'
+  #   id: "terraform-destroy"
+  #   entrypoint: 'sh'
+  #   args:
+  #     - '-c'
+  #     - |
+  #         varfileBase=".environments/$_ENVIRONMENT"
+  #         varfiles=""
+
+  #         for file in $_VARFILES; do
+  #           if [ -n "$file" ]; then
+  #             varfiles="$varfiles -var-file=$varfileBase/$file"
+  #           fi
+  #         done
+  #         varfiles=$(echo "$varfiles" | tr ',' ' ')
+  #         echo "Arquivos de variáveis usados: $varfiles"
+  #         cd infra_dir/applications/cloud_run/$_SERVICE_NAME
+  #         terraform destroy -auto-approve $varfiles
+
+  - name: 'hashicorp/terraform:latest'
+    id: "terraform-apply"
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+          cd infra_dir/applications/cloud_run/$_SERVICE_NAME
+          terraform apply -auto-approve tfplan
+
+          echo "Salvando outputs do Terraform..."
+          terraform output -json > ./terraform_outputs.json
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: "debug-check-json"
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+          echo "DEBUG: Verificando conteúdo do terraform_outputs.json..."
+          cat /workspace/infra_dir/applications/cloud_run/$_SERVICE_NAME/terraform_outputs.json
+
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: "update-load-balancer"
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+          echo "Lendo outputs do Terraform..."
+          echo "Caminho do arquivo: /workspace/infra_dir/applications/cloud_run/${_SERVICE_NAME}/terraform_outputs.json"
+          ls -la /workspace/infra_dir/applications/cloud_run/${_SERVICE_NAME}/terraform_outputs.json || echo "Arquivo não encontrado!"
+          cat /workspace/infra_dir/applications/cloud_run/${_SERVICE_NAME}/terraform_outputs.json || echo "Erro ao ler o arquivo!"
+          
+          # Gera um arquivo temporário com as variáveis
+          python3 - <<EOF
+          import json
+
+          with open('/workspace/infra_dir/applications/cloud_run/${_SERVICE_NAME}/terraform_outputs.json') as f:
+              data = json.load(f)
+
+          backend_service_id = data.get('backend_service_id', {}).get('value', '') or data.get('backend_service_id', '')
+          host = data.get('host', {}).get('value', '') or data.get('host', '')
+          path_matcher_name = data.get('path_matcher_name', {}).get('value', '') or data.get('path_matcher_name', '')
+          gcp_project_environment = data.get('gcp_project_environment', {}).get('value', '') or data.get('gcp_project_environment', '')
+
+          if not all([backend_service_id, host, path_matcher_name, gcp_project_environment]):
+              print("Erro: Um ou mais outputs do Terraform estão vazios. Verifique o JSON.")
+              exit(1)
+
+          with open('/tmp/env_vars.sh', 'w') as f:
+              f.write(f"export BACKEND_SERVICE_ID='{backend_service_id}'\n")
+              f.write(f"export HOST='{host}'\n")
+              f.write(f"export PATH_MATCHER_NAME='{path_matcher_name}'\n")
+              f.write(f"export GCP_PROJECT_ENVIRONMENT='{gcp_project_environment}'\n")
+          EOF
+
+          # Carrega as variáveis sem exibir nada que use $
+          source /tmp/env_vars.sh
+          echo "Variáveis carregadas, executando script..."
+
+          chmod +x infra_dir/applications/cloud_run/${_SERVICE_NAME}/update_load_balancer.sh
+          infra_dir/applications/cloud_run/${_SERVICE_NAME}/update_load_balancer.sh
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _SERVICE_NAME: ""
+  _GITHUB_PAT: ""
+  _ENVIRONMENT: ""
+  _VARFILES: 'variables.auto.tfvars, environment.auto.tfvars'
+
+availableSecrets:
+
+timeout: 3600s

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado SIFT</title>
+</head>
+<body>
+    <h2>Descritores SIFT</h2>
+    <img src="data:image/jpeg;base64,{{ image_base64 }}" width="400">
+    
+    <h3>Lista de Descritores</h3>
+    <table border="1">
+        <tr>
+            <th>#</th>
+            <th>Descritor</th>
+        </tr>
+        {% for i, desc in enumerate(descriptors) %}
+        <tr>
+            <td>{{ i }}</td>
+            <td>{{ desc[:5] }}</td> <!-- Apenas os 5 primeiros valores -->
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

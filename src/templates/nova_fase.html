@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}Adicionar fase ao projeto{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-primary">Adicionar fases ao projeto</h2>
+
+    <!-- Se todas as fases já foram adicionadas, exibir alerta -->
+    {% if not fases_disponiveis %}
+        <div class="alert alert-warning">Todas as fases já foram adicionadas a este projeto.</div>
+    {% else %}
+        <form method="POST">
+            <div class="mb-3">
+                <label for="nome_fase" class="form-label">Selecione uma Nova Fase</label>
+                <select class="form-control" id="nome_fase" name="nome_fase" required>
+                    <option value="">Selecione uma fase</option>
+                    {% for fase in fases_disponiveis %}
+                        <option value="{{ fase }}">{{ fase }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição (Opcional)</label>
+                <textarea class="form-control" id="descricao" name="descricao"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">Adicionar Fase</button>
+        </form>
+    {% endif %}
+
+    <hr>
+
+    <h2 class="text-secondary">Fases e atividades já cadastradas</h2>
+    {% if fases_existentes %}
+        {% for fase in fases_existentes %}
+            <div class="card mb-4 border-dark">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">📌 Fase : {{ fase.nome }}</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Descrição:</strong> {{ fase.descricao or "Sem descrição" }}</p>
+
+                    <h6 class="text-primary">Atividades</h6>
+                    {% if atividades_por_fase[fase.nome] %}
+                        <ul class="list-group">
+                            {% for atividade in atividades_por_fase[fase.nome] %}
+                                <li class="list-group-item">
+                                    <strong>📍 {{ atividade.nome }}</strong><br>
+                                    <small>{{ atividade.descricao }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Nenhuma atividade cadastrada para esta fase.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">Nenhuma fase cadastrada para este projeto.</p>
+    {% endif %}
+
+    <a href="{{ url_for('crisp.projeto_detalhes', projeto_id=projeto_id) }}" class="btn btn-secondary mt-3">
+        Voltar ao Projeto
+    </a>
+	<br>
+	<br>
+	<br>
+	
+</div>
+{% endblock %}

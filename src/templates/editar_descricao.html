@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <h2>Editar Descrição - {{ entidade.nome }}</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="descricao">Nova Descrição:</label>
+            <textarea class="form-control" name="descricao" rows="4" required>{{ entidade.descricao }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a href="{{ url_for('crisp.detalhes_projeto', id=entidade.id if tipo == 'projeto' else entidade.projeto_id) }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+    <h3 class="mt-4">Histórico de Alterações:</h3>
+    <ul class="list-group">
+        {% for item in entidade.historico %}
+        <li class="list-group-item">
+            <strong>Data:</strong> {{ item.data_modificacao.strftime('%d/%m/%Y %H:%M') }} <br>
+            <strong>Descrição Anterior:</strong> {{ item.descricao_anterior }}
+        </li>
+        {% else %}
+        <p>Nenhuma alteração registrada.</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

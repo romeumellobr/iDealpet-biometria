@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}Selecionar Projeto{% endblock %}
+
+{% block content %}
+<h1>Selecionar um Projeto para Gerenciar Atividades</h1>
+
+<ul class="list-group">
+    {% for projeto in projetos %}
+        <li class="list-group-item">
+		<a href="{{ url_for('crisp.listar_fases', projeto_id=projeto.id) }}" class="btn btn-primary">
+			{{ projeto.nome }}
+		</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
